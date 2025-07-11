@@ -3,27 +3,30 @@
 <head>
   <meta charset="UTF-F-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Perkenalan Diri</title>
+  <title>Donasi - Ramacode</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
+    /* Styling ini sama persis dengan index.html untuk konsistensi */
     * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; font-family: "Segoe UI", sans-serif; }
     body { background: linear-gradient(135deg, #0b1c2d, #1c2a3a); color: #fefae0; transition: background 0.4s, color 0.4s; position: relative; overflow-x: hidden; }
     body.light { background: #87CEEB; color: #222; }
-    header { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 2rem; position: relative; z-index: 1; }
-    .intro-card { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); border-radius: 20px; padding: 2rem; max-width: 400px; width: 100%; box-shadow: 0 8px 20px rgba(0,0,0,0.3); animation: fadeInUp 1s ease-in-out; }
-    body.light .intro-card { background: rgba(255, 255, 255, 0.1); }
+    /* Pastikan halaman donasi terpusat di tengah layar */
+    body { display: flex; flex-direction: column; min-height: 100vh; justify-content: center; align-items: center; }
+
+    /* Hapus elemen header/intro-card yang tidak diperlukan di halaman donasi */
+    header { display: none; } /* Sembunyikan seluruh header */
+    .intro-card { display: none; } /* Pastikan juga intro-card disembunyikan */
 
     .avatar { width: 100px; height: 100px; border-radius: 50%; border: none; margin-bottom: 1rem; object-fit: cover; transition: border 0.4s; }
     body.light .avatar { border: none; }
 
     h1, h2, p, li { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .visible { opacity: 1 !important; transform: translateY(0) !important; }
+    /* Section umum, sesuaikan dengan kebutuhan di halaman donasi */
     section {
         padding: 2.5rem 1.5rem;
         max-width: 700px; margin: 0 auto; position: relative; z-index: 1; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: background 0.4s;
         text-align: center;
-        /* scroll-margin-top dipertahankan untuk link lain yang mungkin menuju ke section ini */
-        scroll-margin-top: 60px; 
     }
     body.light section { background: rgba(255, 255, 255, 0.1); }
     
@@ -137,33 +140,71 @@
     .main-content-wrapper {
         position: relative;
         z-index: 0;
-        min-height: calc(100vh + 1px);
-    }
-
-    /* Styling for the social icons */
-    .card-social {
-        margin-top: 1.5rem;
+        min-height: auto;
+        /* Di halaman donasi, main-content-wrapper akan mengatur posisi kotak donasi */
+        flex-grow: 1; /* Pastikan mengambil ruang yang tersedia */
         display: flex;
         justify-content: center;
-        gap: 1.5rem;
+        align-items: center;
+        padding-top: 60px; /* Offset dari fixed header */
+        padding-bottom: 20px;
     }
 
-    .card-social a {
-        color: #fefae0;
+    /* Styling untuk kotak donasi/QRIS */
+    .donation-card {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(12px);
+        border-radius: 20px;
+        padding: 2.5rem;
+        max-width: 450px; /* Lebar kotak donasi */
+        width: 90%; /* Sesuaikan dengan lebar layar */
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        animation: fadeInUp 1s ease-in-out;
+        margin: auto; /* Pusatkan kotak di halaman */
+        color: #fefae0; /* Warna teks default */
+    }
+
+    body.light .donation-card {
+        background: rgba(255, 255, 255, 0.1);
+        color: #222; /* Warna teks untuk tema terang */
+    }
+
+    .donation-card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .donation-card h2 {
+        margin-bottom: 1.5rem;
         font-size: 1.8rem;
-        transition: color 0.3s ease;
     }
 
-    .card-social a:hover {
-        color: #00c38a;
+    .donation-card p {
+        margin-bottom: 1rem;
+        line-height: 1.6;
+        font-size: 1rem;
     }
 
-    body.light .card-social a {
-        color: #222;
+    .donation-card ul {
+        margin-bottom: 1.5rem;
     }
 
-    body.light .card-social a:hover {
-        color: #009f6b;
+    .donation-card li {
+        text-align: left;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .donation-card li span {
+        font-weight: bold;
+        color: #ffe9ae; /* Warna highlight default */
+    }
+
+    body.light .donation-card li span {
+        color: #0b1c2d; /* Warna highlight tema terang */
     }
 
     .background-animations {
@@ -212,8 +253,9 @@
     </div>
 </div>
 <div class="sidebar-menu" id="sidebarMenu">
-    <a href="#" id="dashboardLink" onclick="event.preventDefault(); toggleSidebar(); window.scrollTo({ top: 0, behavior: 'smooth' }); return false;">Dashboard</a> <a href="donasi.html" target="_blank" onclick="toggleSidebar()">Donasi</a>
-    <a href="#" onclick="alert('Fitur Shop belum tersedia.'); return false;">Shop</a>
+    <a href="index.html#aboutMeSection" id="dashboardLink" onclick="toggleSidebar(); return true;">Dashboard</a>
+    <a href="donasi.html" target="_self" onclick="toggleSidebar(); setActiveMenuItem('donasi.html'); return true;">Donasi</a>
+    <a href="index.html#" onclick="alert('Fitur Shop belum tersedia.'); return false;">Shop</a>
 </div>
 <div class="menu-overlay" id="menuOverlay" onclick="toggleSidebar()"></div>
 <div class="background-animations">
@@ -236,29 +278,19 @@
     </div>
 </div>
 <div class="main-content-wrapper">
-    <header id="topOfPage"> <div class="intro-card">
-            <img src="https://files.catbox.moe/2e872u.jpg" alt="Avatar" class="avatar" />
-            <h1 class="reveal">Halo, Saya <span class="nama-panggilan">Ramacode</span></h1>
-            <p class="reveal">👋 Calon astronot yang nyasar jadi developer bot AI.</p>
-            <div class="card-social">
-                <a href="https://wa.me/6285748319381" target="_blank">
-                    <i class="fab fa-whatsapp"></i>
-                </a>
-                <a href="https://whatsapp.com/channel/0029Vb93agb8fewuANXHaI3U" target="_blank">
-                    <i class="fas fa-broadcast-tower"></i>
-                </a>
-                <a href="https://github.com/ramacode0" target="_blank">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="mailto:ddkrmdnnn@gmail.com">
-                    <i class="fas fa-envelope"></i>
-                </a>
-            </div>
+    <section class="donation-card reveal">
+        <h2 class="reveal">Dukung Ramacode!</h2>
+        <p class="reveal">Donasi Anda sangat berarti untuk mendukung pengembangan proyek-proyek saya.</p>
+        <img src="https://files.catbox.moe/2e872u.jpg" alt="QRIS Code" class="reveal" style="display: block; margin: 1.5rem auto;">
+        <p class="reveal">Atau melalui metode berikut:</p>
+        <ul class="reveal" style="text-align: left; max-width: 300px; margin: 1rem auto 2rem auto;">
+            <li><span>Dana:</span> 081234567890 (a.n. Didik Ramadani)</li>
+            <li><span>GoPay:</span> 081234567890 (a.n. Didik Ramadani)</li>
+            <li><span>Bank:</span> BCA 1234567890 (a.n. Didik Ramadani)</li>
+        </ul>
+        <div class="contact reveal">
+            <a href="https://wa.me/6285748319381" target="_blank">Hubungi via WhatsApp</a>
         </div>
-    </header>
-    <section id="aboutMeSection">
-        <h2 class="reveal">Tentang Saya</h2>
-        <p class="reveal">Saya adalah Didik Ramadani, seorang developer bot AI yang berusia 18 tahun, berdomisili di Kota Satelit, Planet Mars. Di waktu luang, hobi saya adalah rebahan sambil coding dengan penuh emosi. Saya memiliki skill dalam ngoding, desain, dan bahkan debugging yang saya lakukan dengan doa. Dengan semangat eksplorasi, saya terus belajar dan menciptakan inovasi dalam dunia teknologi.</p>
     </section>
 </div>
 <script>
@@ -278,7 +310,7 @@
     const sidebarMenu = document.getElementById('sidebarMenu');
     const hamburgerButton = document.querySelector('.hamburger-button');
     const menuOverlay = document.getElementById('menuOverlay');
-    const dashboardLink = document.getElementById('dashboardLink');
+    const donasiLinkInSidebar = document.querySelector('.sidebar-menu a[href="donasi.html"]'); // Dapatkan tautan Donasi di sidebar
     const hamburgerMenuContainer = document.querySelector('.hamburger-menu-container');
 
     function toggleSidebar() {
@@ -287,7 +319,6 @@
         menuOverlay.classList.toggle('active');
         document.body.classList.toggle('sidebar-open');
 
-        // Re-trigger the bouncePop animation on the container
         hamburgerMenuContainer.style.animation = 'none';
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
@@ -297,25 +328,23 @@
     }
     function setActiveMenuItem() {
         const currentPath = window.location.pathname.split('/').pop();
-        const sectionId = window.location.hash.substring(1);
 
         document.querySelectorAll('.sidebar-menu a').forEach(link => {
             link.classList.remove('active');
         });
 
-        if (currentPath === 'index.html' || currentPath === '') {
-            // Aktifkan Dashboard hanya jika di bagian paling atas atau #aboutMeSection jika itu yang aktif
-            if (sectionId === '' || sectionId === 'topOfPage' || sectionId === 'aboutMeSection') {
-                 dashboardLink.classList.add('active');
-            }
-        } else if (currentPath === 'donasi.html') {
-            document.querySelector('.sidebar-menu a[href="donasi.html"]').classList.add('active');
+        if (currentPath === 'donasi.html') {
+            if (donasiLinkInSidebar) donasiLinkInSidebar.classList.add('active');
         }
+        // Jika ada tautan lain di sidebar, tambahkan logika di sini untuk menandainya aktif
+        // Misalnya, jika ada tautan "Shop" yang mengarah ke "shop.html":
+        // else if (currentPath === 'shop.html') {
+        //     document.querySelector('.sidebar-menu a[href="shop.html"]').classList.add('active');
+        // }
     }
     document.addEventListener('DOMContentLoaded', setActiveMenuItem);
 
     const animatedMoon = document.getElementById('animatedMoon');
-    const aboutMeSection = document.getElementById('aboutMeSection');
     window.addEventListener('scroll', () => {
         if (animatedMoon && !document.body.classList.contains('light')) {
             animatedMoon.style.opacity = 1;
