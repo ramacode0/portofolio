@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perkenalan Diri</title>
+  <style>
+    /* --- Global Styles --- */
+    * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; font-family: "Segoe UI", sans-serif; }
+    body { background: linear-gradient(135deg, #0b1c2d, #1c2a3a); color: #fefae0; transition: background 0.4s, color 0.4s; position: relative; }
+    body.light { background: #87CEEB; color: #222; }
+
+    /* --- Header & Intro Card --- */
+    header { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 2rem; position: relative; z-index: 1; }
+    .intro-card { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); border-radius: 20px; padding: 2rem; max-width: 400px; width: 100%; box-shadow: 0 8px 20px rgba(0,0,0,0.3); animation: fadeInUp 1s ease-in-out; }
+    .avatar { width: 100px; height: 100px; border-radius: 50%; border: 3px solid #fefae0; margin-bottom: 1rem; object-fit: cover; transition: border 0.4s; }
+    body.light .avatar { border-color: #000; }
+
+    /* --- Text Reveal Animation --- */
+    h1, h2, p, li { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .visible { opacity: 1 !important; transform: translateY(0) !important; }
+
+    /* --- Sections --- */
+    section { padding: 4rem 2rem; max-width: 700px; margin: 0 auto; position: relative; z-index: 1; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: background 0.4s; }
+    body.light section { background: rgba(255, 255, 255, 0.5); }
+    h2 { margin-bottom: 1rem; font-size: 1.5rem; }
+    ul { list-style: none; padding-left: 0; line-height: 2rem; }
+    li span { font-weight: bold; color: #ffe9ae; }
+    body.light li span { color: #0b1c2d; }
+    .contact { text-align: center; margin-top: 2rem; }
+    .contact a { display: inline-block; background: #00c38a; color: #fff; padding: 0.8rem 1.5rem; border-radius: 0.5rem; text-decoration: none; transition: background 0.3s; }
+    .contact a:hover { background: #009f6b; }
+
+    /* --- Keyframe Animations --- */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* --- Theme Toggle --- */
+    .theme-toggle-container { position: absolute; top: 1.2rem; right: 1.2rem; z-index: 9999; background: rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 3px; display: flex; align-items: center; width: 90px; height: 36px; cursor: pointer; overflow: hidden; transition: background 0.4s, opacity 0.3s ease-out, visibility 0.3s ease-out; }
+    body.light .theme-toggle-container { background: rgba(0, 0, 0, 0.1); }
+    body.sidebar-open .theme-toggle-container { opacity: 0; visibility: hidden; } /* Hide when sidebar is open */
+
+    .theme-toggle-slider { position: absolute; top: 3px; width: 42px; height: 30px; background: #87CEEB; border-radius: 15px; transition: left 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), background 0.4s ease-in-out; left: 3px; transform: translateX(0); }
+    body.light .theme-toggle-slider { left: 45px; background: #0b1c2d; }
+    
+    .theme-toggle-icon { position: relative; width: 50%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; z-index: 1; color: #fefae0; transition: color 0.4s; }
+    body.light .theme-toggle-icon { color: #0b1c2d; }
+
+    /* --- Hamburger Menu Container (DIUBAH) --- */
+    .hamburger-menu-container {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        z-index: 9999;
+        background: rgba(255, 255, 255, 0.2);
+        /* MENGUBAH: Mengatur border-radius agar lebih bulat di samping */
+        border-radius: 20px 0px 20px 0px; /* Bentuk asimetris: atas kanan & bawah kiri datar */
+        /* Alternatif lain untuk lebih bulat sempurna di semua sisi: border-radius: 50px; atau besar sesuai lebar/tinggi */
+        padding: 3px;
+        display: flex;
+        align-items: center;
+        width: 48px;
+        height: 40px;
+        transition: background 0.4s;
+    }
+    body.light .hamburger-menu-container { background: rgba(0, 0, 0, 0.1); }
+
+    .hamburger-button { background: transparent; border: none; cursor: pointer; padding: 0; display: flex; flex-direction: column; justify-content: space-around; width: 30px; height: 25px; position: relative; z-index: 10000; margin: 0 auto; }
+    
+    .hamburger-button .bar {
+        width: 100%;
+        height: 3px;
+        background-color: #fefae0;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        transform-origin: center center;
+    }
+    body.light .hamburger-button .bar { background-color: #0b1c2d; }
+
+    .hamburger-button.open .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .hamburger-button.open .bar:nth-child(2) { opacity: 0; }
+    .hamburger-button.open .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    /* --- Sidebar Menu --- */
+    .sidebar-menu { position: fixed; top: 0; left: -250px; width: 250px; height: 100%; background: rgba(11, 28, 45, 0.95); backdrop-filter: blur(10px); box-shadow: 2px 0 10px rgba(0,0,0,0.5); padding-top: 80px; transition: left 0.3s ease-in-out; z-index: 9998; display: flex; flex-direction: column; align-items: flex-start; padding-left: 20px; box-sizing: border-box; }
+    body.light .sidebar-menu { background: rgba(135, 206, 235, 0.95); }
+    .sidebar-menu.open { left: 0; }
+    
+    .sidebar-menu a { color: #fefae0; text-decoration: none; padding: 8px 0px; width: calc(100% - 40px); text-align: left; margin-bottom: 5px; border-radius: 4px; transition: background 0.3s, color 0.3s; font-size: 0.95rem; box-sizing: border-box; }
+    body.light .sidebar-menu a { color: #0b1c2d; }
+    .sidebar-menu a:hover { background: rgba(255, 255, 255, 0.2); color: #fff; }
+    body.light .sidebar-menu a:hover { background: rgba(0, 0, 0, 0.1); color: #0b1c2d; }
+
+    .sidebar-menu a.active { background: #00c38a; color: #fff; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+    body.light .sidebar-menu a.active { background: #009f6b; color: #fff; }
+
+    /* --- Menu Overlay --- */
+    .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 9997; opacity: 0; visibility: hidden; transition: opacity 0.3s ease; }
+    .menu-overlay.active { opacity: 1; visibility: visible; }
+
+    /* --- Background Animations --- */
+    .background-animations { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -1; pointer-events: none; }
+    .dark-theme-elements, .light-theme-elements { width: 100%; height: 100%; position: absolute; top: 0; left: 0; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
+    body .dark-theme-elements { opacity: 1; pointer-events: auto; }
+    body.light .dark-theme-elements { opacity: 0; pointer-events: none; }
+    body.light .light-theme-elements { opacity: 1; pointer-events: auto; }
+
+    /* Moon */
+    .moon { position: absolute; width: 100px; height: 100px; background: #fdfae0; border-radius: 50%; top: 10%; left: 8%; box-shadow: 0 0 30px #fdfae0; opacity: 1; }
+
+    /* Twinkling Stars */
+    @keyframes twinkle { 0%, 100% { opacity: 0.5; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
+    .star { position: absolute; background: #fff; border-radius: 50%; animation: twinkle 3s infinite ease-in-out alternate; }
+    .star:nth-child(1) { width: 3px; height: 3px; top: 5%; left: 15%; animation-delay: 0.1s; } .star:nth-child(2) { width: 2px; height: 2px; top: 12%; left: 25%; animation-delay: 1.2s; } .star:nth-child(3) { width: 4px; height: 4px; top: 18%; left: 5%; animation-delay: 0.7s; } .star:nth-child(4) { width: 2px; height: 2px; top: 25%; left: 30%; animation-delay: 2.1s; } .star:nth-child(5) { width: 3px; height: 3px; top: 30%; left: 10%; animation-delay: 1.5s; } .star:nth-child(6) { width: 2px; height: 2px; top: 35%; left: 20%; animation-delay: 0.9s; } .star:nth-child(7) { width: 3px; height: 3px; top: 40%; left: 18%; animation-delay: 2.5s; } .star:nth-child(8) { width: 2px; height: 2px; top: 45%; left: 7%; animation-delay: 0.5s; } .star:nth-child(9) { width: 4px; height: 4px; top: 50%; left: 22%; animation-delay: 1.8s; } .star:nth-child(10) { width: 2px; height: 2px; top: 55%; left: 12%; animation-delay: 0.3s; } .star:nth-child(11) { width: 3px; height: 3px; top: 60%; left: 28%; animation-delay: 1.3s; } .star:nth-child(12) { width: 2px; height: 2px; top: 65%; left: 3%; animation-delay: 2.8s; } .star:nth-child(13) { width: 4px; height: 4px; top: 70%; left: 17%; animation-delay: 0.6s; } .star:nth-child(14) { width: 2px; height: 2px; top: 75%; left: 29%; animation-delay: 1.0s; } .star:nth-child(15) { width: 3px; height: 3px; top: 80%; left: 9%; animation-delay: 2.3s; }
+
+    /* --- Shooting Stars Animation --- */
+    @keyframes shoot {
+        0% {
+            transform: translate(0, 0) scale(0);
+            opacity: 0;
+        }
+        20% {
+            transform: translate(-100px, 100px) scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: translate(-500px, 500px) scale(0);
+            opacity: 0;
+        }
+    }
+    .shooting-star {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        transform-origin: center;
+        animation: shoot 5s linear infinite;
+        pointer-events: none;
+    }
+    .shooting-star:nth-child(1) { top: 10%; left: 90%; animation-delay: 0s; transform: rotate(45deg); }
+    .shooting-star:nth-child(2) { top: 30%; left: 80%; animation-delay: 2s; transform: rotate(60deg); width: 3px; height: 3px;}
+    .shooting-star:nth-child(3) { top: 50%; left: 95%; animation-delay: 4s; transform: rotate(30deg); width: 5px; height: 5px;}
+    .shooting-star:nth-child(4) { top: 20%; left: 70%; animation-delay: 6s; transform: rotate(70deg); width: 2px; height: 2px;}
+
+    /* Clouds */
+    @keyframes float-continuous { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
+    .cloud { position: absolute; background: rgba(255, 255, 255, 0.8); border-radius: 50% 50% 0 0 / 100% 100% 0 0; box-shadow: 30px 0 0 0 rgba(255, 255, 255, 0.8), -30px 0 0 0 rgba(255, 255, 255, 0.8); animation: float-continuous 40s linear infinite; }
+    .cloud:nth-child(1) { width: 120px; height: 60px; top: 15%; left: -20%; animation-duration: 35s; animation-delay: -5s; } .cloud:nth-child(2) { width: 150px; height: 70px; top: 40%; left: -50%; animation-duration: 45s; animation-delay: -15s; } .cloud:nth-child(3) { width: 100px; height: 50px; top: 70%; left: -10%; animation-duration: 30s; animation-delay: -2s; }
+
+    /* Sun */
+    .sun { position: absolute; width: 120px; height: 120px; background: #FFD700; border-radius: 50%; top: 10%; right: 8%; box-shadow: 0 0 40px 10px rgba(255, 215, 0, 0.7); transition: transform 0.5s ease-out; }
+  </style>
+</head>
+<body>
+  
+<div class="hamburger-menu-container">
+    <button class="hamburger-button" onclick="toggleSidebar()">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+  </div>
+
+  <div class="sidebar-menu" id="sidebarMenu">
+    <a href="#" id="dashboardLink" onclick="alert('Fitur Dashboard belum tersedia.'); return false;">Dashboard</a>
+    <a href="https://wa.me/6285748319381" target="_blank">Contact Saya</a>
+    <a href="#" onclick="alert('Fitur Donasi belum tersedia.'); return false;">Donasi</a>
+    <a href="#" onclick="alert('Fitur Shop belum tersedia.'); return false;">Shop</a>
+  </div>
+
+  <div class="menu-overlay" id="menuOverlay" onclick="toggleSidebar()"></div>
+
+  <div class="theme-toggle-container" onclick="toggleTheme()">
+    <div class="theme-toggle-slider"></div>
+    <div class="theme-toggle-icon">🌙</div> 
+    <div class="theme-toggle-icon">🌞</div> 
+</div>
+
+  <div class="background-animations">
+    <div class="dark-theme-elements">
+      <div class="moon" id="animatedMoon"></div>
+      <span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span>
+      <span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span>
+      <span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span>
+      <span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span>
+      
+      <div class="shooting-star"></div>
+      <div class="shooting-star"></div>
+      <div class="shooting-star"></div>
+      <div class="shooting-star"></div>
+
+    </div>
+    <div class="light-theme-elements">
+      <div class="sun"></div>
+      <div class="cloud"></div>
+      <div class="cloud"></div>
+      <div class="cloud"></div>
+    </div>
+  </div>
+
+  <header>
+    <div class="intro-card">
+      <img src="https://files.catbox.moe/2e872u.jpg" alt="Avatar" class="avatar" />
+      <h1 class="reveal">Halo, Saya <span class="nama-panggilan">Ramacode</span></h1>
+      <p class="reveal">👋 Calon astronot yang nyasar jadi developer bot AI.</p>
+    </div>
+  </header>
+
+  <section id="aboutMeSection">
+    <h2 class="reveal">📝 Tentang Saya</h2>
+    <ul>
+      <li class="reveal"><span>Nama Lengkap:</span> Didik Ramadani</li>
+      <li class="reveal"><span>Umur:</span> 18 Tahun</li>
+      <li class="reveal"><span>Domisili:</span> Kota Satelit, Planet Mars</li>
+      <li class="reveal"><span>Hobi:</span> Rebahan sambil coding pakai emosi</li>
+      <li class="reveal"><span>Skill:</span> Ngoding, Desain, Debugging dengan doa</li>
+    </ul>
+</section>
+
+  <script>
+    // Intersection Observer for reveal animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Theme Toggle Functionality
+    function toggleTheme() {
+      const body = document.body;
+      body.classList.toggle('light');
+    }
+
+    // Sidebar and Hamburger Menu Functionality
+    const sidebarMenu = document.getElementById('sidebarMenu');
+    const hamburgerButton = document.querySelector('.hamburger-button');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const dashboardLink = document.getElementById('dashboardLink');
+
+    function toggleSidebar() {
+      sidebarMenu.classList.toggle('open');
+      hamburgerButton.classList.toggle('open');
+      menuOverlay.classList.toggle('active');
+      document.body.classList.toggle('sidebar-open');
+    }
+
+    // Set active menu item on load
+    function setActiveMenuItem() {
+        dashboardLink.classList.add('active');
+    }
+    document.addEventListener('DOMContentLoaded', setActiveMenuItem);
+
+    // Moon opacity control on scroll (original functionality)
+    const animatedMoon = document.getElementById('animatedMoon');
+    const aboutMeSection = document.getElementById('aboutMeSection');
+    window.addEventListener('scroll', () => {
+      if (animatedMoon && !document.body.classList.contains('light')) {
+        animatedMoon.style.opacity = 1; 
+      } else if (animatedMoon) {
+          animatedMoon.style.opacity = 1;
+      }
+    });
+  </script>
+</body>
+</html>
